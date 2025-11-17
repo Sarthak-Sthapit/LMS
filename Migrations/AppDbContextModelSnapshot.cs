@@ -22,6 +22,141 @@ namespace RestAPI.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("RestAPI.Models.Author", b =>
+                {
+                    b.Property<int>("AuthorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AuthorId"));
+
+                    b.Property<string>("AuthorName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("AuthorId");
+
+                    b.ToTable("Authors");
+                });
+
+            modelBuilder.Entity("RestAPI.Models.Book", b =>
+                {
+                    b.Property<int>("BookId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BookId"));
+
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Barcode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("ISBN")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("PublicationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Publisher")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("SubjectGenre")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("BookId");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("RestAPI.Models.Issue", b =>
+                {
+                    b.Property<int>("IssueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IssueId"));
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("IssueDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("IssueId");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Issues");
+                });
+
+            modelBuilder.Entity("RestAPI.Models.Student", b =>
+                {
+                    b.Property<int>("StudentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("StudentId"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ContactNo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Faculty")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Semester")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.HasKey("StudentId");
+
+                    b.ToTable("Students");
+                });
+
             modelBuilder.Entity("RestAPI.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -44,6 +179,51 @@ namespace RestAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("RestAPI.Models.Book", b =>
+                {
+                    b.HasOne("RestAPI.Models.Author", "Author")
+                        .WithMany("Books")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("RestAPI.Models.Issue", b =>
+                {
+                    b.HasOne("RestAPI.Models.Book", "Book")
+                        .WithMany("Issues")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("RestAPI.Models.Student", "Student")
+                        .WithMany("Issues")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("RestAPI.Models.Author", b =>
+                {
+                    b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("RestAPI.Models.Book", b =>
+                {
+                    b.Navigation("Issues");
+                });
+
+            modelBuilder.Entity("RestAPI.Models.Student", b =>
+                {
+                    b.Navigation("Issues");
                 });
 #pragma warning restore 612, 618
         }

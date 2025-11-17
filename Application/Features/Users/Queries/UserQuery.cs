@@ -7,11 +7,8 @@ namespace RestAPI.Application.Queries
         public int UserId { get; set; }
     }
 
-    public class GetAllUsersQuery : IRequest<GetAllUsersResult>
-    {
-        public int Page { get; set; } = 1;
-        public int PageSize { get; set; } = 100;
-    }
+    public class GetAllUsersQuery : IRequest<GetAllUsersResult> {}
+    
 
     public class AuthenticateUserQuery : IRequest<AuthenticateUserResult>
     {

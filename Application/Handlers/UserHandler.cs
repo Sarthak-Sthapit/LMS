@@ -8,7 +8,7 @@ using AutoMapper;
 
 namespace RestAPI.Application.Handlers
 {
-    // Add IRequestHandler interface to your existing handler
+    // Add IRequestHandler interface to existing handler
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, CreateUserResult>
     {
         private readonly IUserRepository _userRepository;
@@ -25,7 +25,7 @@ namespace RestAPI.Application.Handlers
         // Change return type and add Task 
         public Task<CreateUserResult> Handle(CreateUserCommand command, CancellationToken cancellationToken)
         {
-            // Keep ALL your existing logic exactly the same
+            // Keep ALL existing logic exactly the same
             if (string.IsNullOrEmpty(command.Username) || string.IsNullOrEmpty(command.Password))
             {
                 return Task.FromResult(new CreateUserResult
@@ -56,7 +56,7 @@ namespace RestAPI.Application.Handlers
 
             var token = _jwtService.CreateToken(newUser);
 
-            // Use AutoMapper instead of manual mapping
+            //  AutoMapper instead of manual mapping
             var userData = _mapper.Map<CreateUserResult.UserData>(newUser);
 
             return Task.FromResult(new CreateUserResult
@@ -83,7 +83,7 @@ namespace RestAPI.Application.Handlers
 
         public Task<UpdateUserResult> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
         {
-            // Keep ALL your existing logic
+            //  existing logic
             var user = _userRepository.GetById(command.UserId);
             if (user == null)
             {
@@ -115,7 +115,7 @@ namespace RestAPI.Application.Handlers
 
             _userRepository.Update(user);
 
-            // Use AutoMapper
+            // AutoMapper
             var userData = _mapper.Map<UpdateUserResult.UserData>(user);
 
             return Task.FromResult(new UpdateUserResult
@@ -178,7 +178,7 @@ namespace RestAPI.Application.Handlers
         {
             var users = _userRepository.GetAll();
 
-            // Use AutoMapper for list mapping
+            // AutoMapper for list mapping
             var userSummaries = _mapper.Map<List<GetAllUsersResult.UserSummary>>(users);
 
             return Task.FromResult(new GetAllUsersResult

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ij3n1w04mAk=",
+  "dgSpecHash": "1L5uUstDQ/E=",
   "success": true,
-  "projectFilePath": "/home/sarthak/Documents/internship/RestAPI(auto)/RestAPI.csproj",
+  "projectFilePath": "/home/sarthak/Documents/internship/Projects/LMS-backend/RestAPI.csproj",
   "expectedPackageFiles": [
     "/home/sarthak/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
     "/home/sarthak/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
@@ -11,7 +11,6 @@
     "/home/sarthak/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/home/sarthak/.nuget/packages/mediatr/12.4.0/mediatr.12.4.0.nupkg.sha512",
     "/home/sarthak/.nuget/packages/mediatr.contracts/2.0.1/mediatr.contracts.2.0.1.nupkg.sha512",
-    "/home/sarthak/.nuget/packages/mediatr.extensions.microsoft.dependencyinjection/11.1.0/mediatr.extensions.microsoft.dependencyinjection.11.1.0.nupkg.sha512",
     "/home/sarthak/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/9.0.9/microsoft.aspnetcore.authentication.jwtbearer.9.0.9.nupkg.sha512",
     "/home/sarthak/.nuget/packages/microsoft.aspnetcore.openapi/9.0.8/microsoft.aspnetcore.openapi.9.0.8.nupkg.sha512",
     "/home/sarthak/.nuget/packages/microsoft.bcl.asyncinterfaces/7.0.0/microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
@@ -95,16 +94,5 @@
     "/home/sarthak/.nuget/packages/system.windows.extensions/6.0.0/system.windows.extensions.6.0.0.nupkg.sha512",
     "/home/sarthak/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.9/microsoft.aspnetcore.app.ref.9.0.9.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1608",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Detected package version outside of dependency constraint: MediatR.Extensions.Microsoft.DependencyInjection 11.1.0 requires MediatR (>= 11.0.0 && < 12.0.0) but version MediatR 12.4.0 was resolved.",
-      "libraryId": "MediatR",
-      "targetGraphs": [
-        "net9.0"
-      ]
-    }
-  ]
+  "logs": []
 }

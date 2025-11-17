@@ -119,19 +119,6 @@
           }
         }
       },
-      "MediatR.Extensions.Microsoft.DependencyInjection/11.1.0": {
-        "type": "package",
-        "dependencies": {
-          "MediatR": "[11.0.0, 12.0.0)",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "7.0.0"
-        },
-        "compile": {
-          "lib/netstandard2.1/MediatR.Extensions.Microsoft.DependencyInjection.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.1/MediatR.Extensions.Microsoft.DependencyInjection.dll": {}
-        }
-      },
       "Microsoft.AspNetCore.Authentication.JwtBearer/9.0.9": {
         "type": "package",
         "dependencies": {
@@ -1895,19 +1882,6 @@
         "lib/netstandard2.0/MediatR.Contracts.xml",
         "mediatr.contracts.2.0.1.nupkg.sha512",
         "mediatr.contracts.nuspec"
-      ]
-    },
-    "MediatR.Extensions.Microsoft.DependencyInjection/11.1.0": {
-      "sha512": "RW3etRuy6Xp63cgqfC0r/ITOtUT0f9ymJl1+1XZdzsYUsfv7WBPC2kXGOP8IYpY/6c4Q6805vbIW/88DopUs3w==",
-      "type": "package",
-      "path": "mediatr.extensions.microsoft.dependencyinjection/11.1.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "gradient_128x128.png",
-        "lib/netstandard2.1/MediatR.Extensions.Microsoft.DependencyInjection.dll",
-        "mediatr.extensions.microsoft.dependencyinjection.11.1.0.nupkg.sha512",
-        "mediatr.extensions.microsoft.dependencyinjection.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/9.0.9": {
@@ -5150,7 +5124,6 @@
       "AutoMapper >= 12.0.1",
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 12.0.1",
       "MediatR >= 12.4.0",
-      "MediatR.Extensions.Microsoft.DependencyInjection >= 11.1.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 9.0.9",
       "Microsoft.AspNetCore.OpenApi >= 9.0.8",
       "Microsoft.EntityFrameworkCore >= 9.0.8",
@@ -5166,11 +5139,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/sarthak/Documents/internship/RestAPI(auto)/RestAPI.csproj",
+      "projectUniqueName": "/home/sarthak/Documents/internship/Projects/LMS-backend/RestAPI.csproj",
       "projectName": "RestAPI",
-      "projectPath": "/home/sarthak/Documents/internship/RestAPI(auto)/RestAPI.csproj",
+      "projectPath": "/home/sarthak/Documents/internship/Projects/LMS-backend/RestAPI.csproj",
       "packagesPath": "/home/sarthak/.nuget/packages/",
-      "outputPath": "/home/sarthak/Documents/internship/RestAPI(auto)/obj/",
+      "outputPath": "/home/sarthak/Documents/internship/Projects/LMS-backend/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/sarthak/.nuget/NuGet/NuGet.Config"
@@ -5214,10 +5187,6 @@
           "MediatR": {
             "target": "Package",
             "version": "[12.4.0, )"
-          },
-          "MediatR.Extensions.Microsoft.DependencyInjection": {
-            "target": "Package",
-            "version": "[11.1.0, )"
           },
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",
@@ -5278,17 +5247,5 @@
         "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.110/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1608",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Detected package version outside of dependency constraint: MediatR.Extensions.Microsoft.DependencyInjection 11.1.0 requires MediatR (>= 11.0.0 && < 12.0.0) but version MediatR 12.4.0 was resolved.",
-      "libraryId": "MediatR",
-      "targetGraphs": [
-        "net9.0"
-      ]
-    }
-  ]
+  }
 }

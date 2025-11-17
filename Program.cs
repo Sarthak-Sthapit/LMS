@@ -2,68 +2,69 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Reflection; // Added this
+using System.Reflection;
 using RestAPI.Data;
 using RestAPI.Repositories;
 using RestAPI.Services;
-using Microsoft.OpenApi.Models;    
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Your existing database configuration
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Your existing dependencies
 builder.Services.AddScoped<IUserRepository, DatabaseUserRepository>();
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IIssueRepository, IssueRepository>();
+
 builder.Services.AddScoped<JwtService>();
 
-// MediatR and AutoMapper registration
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+builder.Services.AddMediatR(cfg => 
+    cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-// Your existing controller registration
 builder.Services.AddControllers();
 
-// Your existing Swagger
 builder.Services.AddEndpointsApiExplorer();
-
-// AddSwaggerGen: Configures Swagger UI for testing API endpoints
 builder.Services.AddSwaggerGen(c =>
 {
-    // Basic API information displayed in Swagger UI
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My RestAPI", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Library Management System API", Version = "v1" });
 
-    // JWT Authentication Integration with Swagger UI
-    // AddSecurityDefinition: Defines how authentication works in Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        In = ParameterLocation.Header,          // Token goes in HTTP header
-        Description = "Please enter a valid JWT token with Bearer prefix", // User instruction
-        Name = "Authorization",                 // Header name
-        Type = SecuritySchemeType.ApiKey,      // Type of authentication
-        Scheme = "Bearer"                       // Authentication scheme name
+        In = ParameterLocation.Header,
+        Description = "Please enter a valid JWT token with Bearer prefix",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
     });
 
-    // AddSecurityRequirement: Makes Swagger UI show "Authorize" button
-    // This allows users to input their JWT token for testing protected endpoints
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
-            new OpenApiSecurityScheme //ref pointer to the auth method defined above
+            new OpenApiSecurityScheme
             {
                 Reference = new OpenApiReference
                 {
-                    Type = ReferenceType.SecurityScheme, //tells swagger about the type of auth
-                    Id = "Bearer"                       // Must match the security definition above
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
                 }
             },
-            new string[] {}  // No specific scopes required such as  "read" "write" "admin" permissions etc 
+            new string[] {}
         }
     });
 });
 
-// Your existing JWT authentication
+// FIXED: Null check for JWT secret
+var jwtSecret = builder.Configuration["Jwt:SecretKey"];
+if (string.IsNullOrEmpty(jwtSecret))
+{
+    throw new InvalidOperationException("JWT SecretKey is not configured!");
+}
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -75,14 +76,27 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Issuer"],
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
         };
     });
 
+// for CORS error
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", builder =>
+    {
+        builder.WithOrigins("http://localhost:5173")
+               .AllowAnyMethod()
+               .AllowAnyHeader()
+               .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
-// Your existing pipeline configuration
+
+app.UseCors("AllowFrontend");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
