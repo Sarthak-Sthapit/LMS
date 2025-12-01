@@ -1,3 +1,4 @@
+
 using RestAPI.Data;
 using RestAPI.Models;
 
@@ -6,6 +7,7 @@ namespace RestAPI.Repositories
     public class AuthorRepository : IAuthorRepository
     {
         private readonly AppDbContext _context;
+        
         public AuthorRepository(AppDbContext context)
         {
             _context = context;
@@ -13,33 +15,21 @@ namespace RestAPI.Repositories
 
         public Author? GetById(int id)
         {
-            foreach (var author in _context.Authors)
-            {
-                if (author.AuthorId == id && !author.IsDeleted)
-                    return author;
-            }
-            return null;
+            return _context.Authors
+                .FirstOrDefault(a => a.AuthorId == id && !a.IsDeleted);
         }
 
         public Author? GetByName(string authorName)
         {
-            foreach (var author in _context.Authors)
-            {
-                if (author.AuthorName == authorName && !author.IsDeleted)
-                    return author;
-            }
-            return null;
+            return _context.Authors
+                .FirstOrDefault(a => a.AuthorName == authorName && !a.IsDeleted);
         }
 
         public List<Author> GetAll()
         {
-            var authorList = new List<Author>();
-            foreach (var author in _context.Authors)
-            {
-                if (!author.IsDeleted)
-                    authorList.Add(author);
-            }
-            return authorList;
+            return _context.Authors
+                .Where(a => !a.IsDeleted)
+                .ToList();
         }
 
         public void Add(Author author)
@@ -50,7 +40,9 @@ namespace RestAPI.Repositories
 
         public void Update(Author author)
         {
-            var existingAuthor = GetById(author.AuthorId);
+            var existingAuthor = _context.Authors
+                .FirstOrDefault(a => a.AuthorId == author.AuthorId && !a.IsDeleted);
+            
             if (existingAuthor != null)
             {
                 existingAuthor.AuthorName = author.AuthorName;
@@ -60,15 +52,14 @@ namespace RestAPI.Repositories
 
         public void Delete(int id)
         {
-            var author = GetById(id);
+            var author = _context.Authors
+                .FirstOrDefault(a => a.AuthorId == id && !a.IsDeleted);
+            
             if (author != null)
             {
                 author.IsDeleted = true;
                 _context.SaveChanges();
             }
         }
-
-
-
     }
 }

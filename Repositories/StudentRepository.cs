@@ -14,33 +14,21 @@ namespace RestAPI.Repositories
 
         public Student? GetById(int id)
         {
-            foreach (var student in _context.Students)
-            {
-                if (student.StudentId == id && !student.IsDeleted)
-                    return student;
-            }
-            return null;
+            return _context.Students
+                .FirstOrDefault(s => s.StudentId == id && !s.IsDeleted);
         }
 
         public Student? GetByName(string name)
         {
-            foreach (var student in _context.Students)
-            {
-                if (student.Name == name && !student.IsDeleted)
-                    return student;
-            }
-            return null;
+            return _context.Students
+                .FirstOrDefault(s => s.Name == name && !s.IsDeleted);
         }
 
         public List<Student> GetAll()
         {
-            var studentList = new List<Student>();
-            foreach (var student in _context.Students)
-            {
-                if (!student.IsDeleted)
-                    studentList.Add(student);
-            }
-            return studentList;
+            return _context.Students
+                .Where(s => !s.IsDeleted)
+                .ToList();
         }
 
         public void Add(Student student)
@@ -51,7 +39,9 @@ namespace RestAPI.Repositories
 
         public void Update(Student student)
         {
-            var existingStudent = GetById(student.StudentId);
+            var existingStudent = _context.Students
+                .FirstOrDefault(s => s.StudentId == student.StudentId && !s.IsDeleted);
+            
             if (existingStudent != null)
             {
                 existingStudent.Name = student.Name;
@@ -65,7 +55,9 @@ namespace RestAPI.Repositories
 
         public void Delete(int id)
         {
-            var student = GetById(id);
+            var student = _context.Students
+                .FirstOrDefault(s => s.StudentId == id && !s.IsDeleted);
+            
             if (student != null)
             {
                 student.IsDeleted = true;

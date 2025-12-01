@@ -1,3 +1,4 @@
+// Models/Book.cs - ENHANCED VERSION
 namespace RestAPI.Models
 {
     public class Book
@@ -11,7 +12,14 @@ namespace RestAPI.Models
         public string SubjectGenre { get; set; } = string.Empty;
         public DateTime? PublicationDate { get; set; }
         
+        // ✅ NEW: Availability tracking
+        public int TotalCopies { get; set; } = 1; // Total copies available in library
+        public int AvailableCopies { get; set; } = 1; // Copies currently available
+        
         public bool IsDeleted { get; set; } = false;
+        
+        // ✅ Computed property
+        public bool IsAvailable => AvailableCopies > 0;
         
         // Navigation properties
         public Author Author { get; set; } = null!;

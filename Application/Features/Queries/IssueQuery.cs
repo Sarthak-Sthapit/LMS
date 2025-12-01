@@ -7,6 +7,16 @@ namespace RestAPI.Application.Queries
         public int IssueId { get; set; }
     }
 
+    // Get all active loans 
+    public class GetActiveLoansQuery : IRequest<GetActiveLoansResult>
+    {
+    }
+
+    //  Get overdue books
+    public class GetOverdueBooksQuery : IRequest<GetActiveLoansResult>
+    {
+    }
+
     public class GetAllIssuesQuery : IRequest<GetAllIssuesResult>
     {
     }
@@ -35,6 +45,11 @@ namespace RestAPI.Application.Queries
             public int StudentId { get; set; }
             public string StudentName { get; set; } = string.Empty;
             public DateTime IssueDate { get; set; }
+            public DateTime DueDate { get; set; }
+            public DateTime? ReturnDate { get; set; }
+            public bool IsReturned { get; set; }
+            public bool IsOverdue { get; set; }
+            public int DaysOverdue { get; set; }
         }
     }
 
@@ -51,6 +66,31 @@ namespace RestAPI.Application.Queries
             public int StudentId { get; set; }
             public string StudentName { get; set; } = string.Empty;
             public DateTime IssueDate { get; set; }
+            public DateTime DueDate { get; set; }
+            public DateTime? ReturnDate { get; set; }
+            public bool IsReturned { get; set; }
+            public bool IsOverdue { get; set; }
+            public int DaysOverdue { get; set; }
+        }
+    }
+
+    // Result for active loans
+    public class GetActiveLoansResult
+    {
+        public bool Success { get; set; }
+        public List<LoanSummary> Loans { get; set; } = new();
+        
+        public class LoanSummary
+        {
+            public int IssueId { get; set; }
+            public int BookId { get; set; }
+            public string BookTitle { get; set; } = string.Empty;
+            public int StudentId { get; set; }
+            public string StudentName { get; set; } = string.Empty;
+            public DateTime IssueDate { get; set; }
+            public DateTime DueDate { get; set; }
+            public bool IsOverdue { get; set; }
+            public int DaysOverdue { get; set; }
         }
     }
 }

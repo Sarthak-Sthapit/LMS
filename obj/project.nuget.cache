@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1L5uUstDQ/E=",
+  "dgSpecHash": "0aOi63WIyu0=",
   "success": true,
-  "projectFilePath": "/home/sarthak/Documents/internship/Projects/LMS-backend/RestAPI.csproj",
+  "projectFilePath": "/home/sarthak/Documents/internship/Projects/LMS/LMS-backend/RestAPI.csproj",
   "expectedPackageFiles": [
     "/home/sarthak/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
     "/home/sarthak/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

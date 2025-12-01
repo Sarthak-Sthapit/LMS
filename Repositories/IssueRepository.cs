@@ -15,45 +15,37 @@ namespace RestAPI.Repositories
 
         public Issue? GetById(int id)
         {
-            foreach (var issue in _context.Issues.Include(i => i.Book).Include(i => i.Student))
-            {
-                if (issue.IssueId == id && !issue.IsDeleted)
-                    return issue;
-            }
-            return null;
+            return _context.Issues
+                .Include(i => i.Book)
+                .Include(i => i.Student)
+                .FirstOrDefault(i => i.IssueId == id && !i.IsDeleted);
         }
 
         public List<Issue> GetAll()
         {
-            var issueList = new List<Issue>();
-            foreach (var issue in _context.Issues.Include(i => i.Book).Include(i => i.Student))
-            {
-                if (!issue.IsDeleted)
-                    issueList.Add(issue);
-            }
-            return issueList;
+            return _context.Issues
+                .Include(i => i.Book)
+                .Include(i => i.Student)
+                .Where(i => !i.IsDeleted)
+                .ToList();
         }
 
         public List<Issue> GetByStudentId(int studentId)
         {
-            var issueList = new List<Issue>();
-            foreach (var issue in _context.Issues.Include(i => i.Book).Include(i => i.Student))
-            {
-                if (issue.StudentId == studentId && !issue.IsDeleted)
-                    issueList.Add(issue);
-            }
-            return issueList;
+            return _context.Issues
+                .Include(i => i.Book)
+                .Include(i => i.Student)
+                .Where(i => i.StudentId == studentId && !i.IsDeleted)
+                .ToList();
         }
 
         public List<Issue> GetByBookId(int bookId)
         {
-            var issueList = new List<Issue>();
-            foreach (var issue in _context.Issues.Include(i => i.Book).Include(i => i.Student))
-            {
-                if (issue.BookId == bookId && !issue.IsDeleted)
-                    issueList.Add(issue);
-            }
-            return issueList;
+            return _context.Issues
+                .Include(i => i.Book)
+                .Include(i => i.Student)
+                .Where(i => i.BookId == bookId && !i.IsDeleted)
+                .ToList();
         }
 
         public void Add(Issue issue)
@@ -64,19 +56,26 @@ namespace RestAPI.Repositories
 
         public void Update(Issue issue)
         {
-            var existingIssue = GetById(issue.IssueId);
+            var existingIssue = _context.Issues
+                .FirstOrDefault(i => i.IssueId == issue.IssueId && !i.IsDeleted);
+            
             if (existingIssue != null)
             {
                 existingIssue.BookId = issue.BookId;
                 existingIssue.StudentId = issue.StudentId;
                 existingIssue.IssueDate = issue.IssueDate;
+                existingIssue.DueDate = issue.DueDate;
+                existingIssue.ReturnDate = issue.ReturnDate;
+                existingIssue.IsReturned = issue.IsReturned;
                 _context.SaveChanges();
             }
         }
 
         public void Delete(int id)
         {
-            var issue = GetById(id);
+            var issue = _context.Issues
+                .FirstOrDefault(i => i.IssueId == id && !i.IsDeleted);
+            
             if (issue != null)
             {
                 issue.IsDeleted = true; 

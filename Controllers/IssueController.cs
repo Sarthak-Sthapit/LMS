@@ -19,13 +19,15 @@ namespace RestAPI.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost]
-        public IActionResult CreateIssue([FromBody] CreateIssueDto dto)
+        //  Checkout Book
+        [HttpPost("checkout")]
+        public IActionResult CheckoutBook([FromBody] CheckoutBookDto dto)
         {
-            var command = new CreateIssueCommand
+            var command = new CheckoutBookCommand
             {
                 BookId = dto.BookId,
-                StudentId = dto.StudentId
+                StudentId = dto.StudentId,
+                BorrowDays = dto.BorrowDays ?? 14
             };
 
             var result = _mediator.Send(command).Result;
@@ -42,6 +44,45 @@ namespace RestAPI.Controllers
             });
         }
 
+        //  Return Book
+        [HttpPost("return/{issueId}")]
+        public IActionResult ReturnBook(int issueId)
+        {
+            var command = new ReturnBookCommand { IssueId = issueId };
+            var result = _mediator.Send(command).Result;
+
+            if (!result.Success)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return Ok(new
+            {
+                message = result.Message,
+                daysOverdue = result.DaysOverdue,
+                issue = result.Issue
+            });
+        }
+
+        //  Get Active Loans
+        [HttpGet("active")]
+        public IActionResult GetActiveLoans()
+        {
+            var query = new GetActiveLoansQuery();
+            var result = _mediator.Send(query).Result;
+            return Ok(result.Loans);
+        }
+
+        // Get Overdue Books
+        [HttpGet("overdue")]
+        public IActionResult GetOverdueBooks()
+        {
+            var query = new GetOverdueBooksQuery();
+            var result = _mediator.Send(query).Result;
+            return Ok(result.Loans);
+        }
+
+        // Keep existing endpoints
         [HttpGet]
         public IActionResult GetAllIssues()
         {
@@ -78,28 +119,6 @@ namespace RestAPI.Controllers
             var query = new GetIssuesByBookQuery { BookId = bookId };
             var result = _mediator.Send(query).Result;
             return Ok(result.Issues);
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult UpdateIssue(int id, [FromBody] UpdateIssueDto dto)
-        {
-            var command = new UpdateIssueCommand
-            {
-                IssueId = id,
-                NewBookId = dto.NewBookId,
-                NewStudentId = dto.NewStudentId
-            };
-
-            var result = _mediator.Send(command).Result;
-            if (!result.Success)
-            {
-                return BadRequest(result.Message);
-            }
-
-            return Ok(new { 
-                message = result.Message, 
-                issue = result.UpdatedIssue  
-            });
         }
 
         [HttpDelete("{id}")]

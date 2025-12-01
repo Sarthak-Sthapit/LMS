@@ -1,3 +1,4 @@
+
 using Microsoft.EntityFrameworkCore;
 using RestAPI.Data;
 using RestAPI.Models;
@@ -15,44 +16,32 @@ namespace RestAPI.Repositories
 
         public Book? GetById(int id)
         {
-            foreach (var book in _context.Books.Include(b => b.Author))
-            {
-                if (book.BookId == id && !book.IsDeleted)
-                    return book;
-            }
-            return null;
+            return _context.Books
+                .Include(b => b.Author)
+                .FirstOrDefault(b => b.BookId == id && !b.IsDeleted);
         }
 
         public Book? GetByTitle(string title)
         {
-            foreach (var book in _context.Books.Include(b => b.Author))
-            {
-                if (book.Title == title && !book.IsDeleted)
-                    return book;
-            }
-            return null;
+            return _context.Books
+                .Include(b => b.Author)
+                .FirstOrDefault(b => b.Title == title && !b.IsDeleted);
         }
 
         public List<Book> GetAll()
         {
-            var bookList = new List<Book>();
-            foreach (var book in _context.Books.Include(b => b.Author))
-            {
-                if (!book.IsDeleted)
-                    bookList.Add(book);
-            }
-            return bookList;
+            return _context.Books
+                .Include(b => b.Author)
+                .Where(b => !b.IsDeleted)
+                .ToList();
         }
 
         public List<Book> GetByAuthorId(int authorId)
         {
-            var bookList = new List<Book>();
-            foreach (var book in _context.Books.Include(b => b.Author))
-            {
-                if (book.AuthorId == authorId && !book.IsDeleted)
-                    bookList.Add(book);
-            }
-            return bookList;
+            return _context.Books
+                .Include(b => b.Author)
+                .Where(b => b.AuthorId == authorId && !b.IsDeleted)
+                .ToList();
         }
 
         public void Add(Book book)
@@ -63,23 +52,42 @@ namespace RestAPI.Repositories
 
         public void Update(Book book)
         {
-            var existingBook = GetById(book.BookId);
+            
+            
+         
+            var existingBook = _context.Books
+                .AsNoTracking()
+                .FirstOrDefault(b => b.BookId == book.BookId && !b.IsDeleted);
+            
             if (existingBook != null)
             {
-                existingBook.Title = book.Title;
-                existingBook.AuthorId = book.AuthorId;
-                existingBook.Publisher = book.Publisher;
-                existingBook.Barcode = book.Barcode;
-                existingBook.ISBN = book.ISBN;
-                existingBook.SubjectGenre = book.SubjectGenre;
-                existingBook.PublicationDate = book.PublicationDate;
+                
+                _context.Books.Attach(book);
+
+                _context.Entry(book).Property(b => b.Title).IsModified = true;
+                _context.Entry(book).Property(b => b.AuthorId).IsModified = true;
+                _context.Entry(book).Property(b => b.Publisher).IsModified = true;
+                _context.Entry(book).Property(b => b.Barcode).IsModified = true;
+                _context.Entry(book).Property(b => b.ISBN).IsModified = true;
+                _context.Entry(book).Property(b => b.SubjectGenre).IsModified = true;
+                _context.Entry(book).Property(b => b.PublicationDate).IsModified = true;
+                
+            
+                
                 _context.SaveChanges();
+                Console.WriteLine($" SaveChanges completed ");
+            }
+            else
+            {
+                Console.WriteLine($" ERROR: Book not found! ");
             }
         }
 
         public void Delete(int id)
         {
-            var book = GetById(id);
+            var book = _context.Books
+                .FirstOrDefault(b => b.BookId == id && !b.IsDeleted);
+            
             if (book != null)
             {
                 book.IsDeleted = true;

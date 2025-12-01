@@ -4,7 +4,6 @@ using RestAPI.DTOs;
 using RestAPI.Application.Commands;
 using RestAPI.Application.Queries;
 using MediatR;
-using System.Reflection;
 
 namespace RestAPI.Controllers
 {
@@ -32,7 +31,6 @@ namespace RestAPI.Controllers
                 SubjectGenre = dto.SubjectGenre,
                 PublicationDate = dto.PublicationDate
             };
-
 
             var result = _mediator.Send(command).Result;
             if (!result.Success)
@@ -75,17 +73,25 @@ namespace RestAPI.Controllers
             return Ok(result.Books);
         }
 
+    
         [HttpPut("{id}")]
         public IActionResult UpdateBook(int id, [FromBody] UpdateBookDto dto)
         {
+            
+
             var command = new UpdateBookCommand
             {
                 BookId = id,
                 NewTitle = dto.NewTitle,
-                NewAuthorId = dto.NewAuthorId
-
+                NewAuthorId = dto.NewAuthorId,
+                NewPublisher = dto.NewPublisher,
+                NewBarcode = dto.NewBarcode,
+                NewISBN = dto.NewISBN,
+                NewSubjectGenre = dto.NewSubjectGenre,
+                NewPublicationDate = dto.NewPublicationDate
             };
 
+        
             var result = _mediator.Send(command).Result;
             if (!result.Success)
             {

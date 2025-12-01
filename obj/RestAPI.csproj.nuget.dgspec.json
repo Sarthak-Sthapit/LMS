@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/sarthak/Documents/internship/Projects/LMS-backend/RestAPI.csproj": {}
+    "/home/sarthak/Documents/internship/Projects/LMS/LMS-backend/RestAPI.csproj": {}
   },
   "projects": {
-    "/home/sarthak/Documents/internship/Projects/LMS-backend/RestAPI.csproj": {
+    "/home/sarthak/Documents/internship/Projects/LMS/LMS-backend/RestAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/sarthak/Documents/internship/Projects/LMS-backend/RestAPI.csproj",
+        "projectUniqueName": "/home/sarthak/Documents/internship/Projects/LMS/LMS-backend/RestAPI.csproj",
         "projectName": "RestAPI",
-        "projectPath": "/home/sarthak/Documents/internship/Projects/LMS-backend/RestAPI.csproj",
+        "projectPath": "/home/sarthak/Documents/internship/Projects/LMS/LMS-backend/RestAPI.csproj",
         "packagesPath": "/home/sarthak/.nuget/packages/",
-        "outputPath": "/home/sarthak/Documents/internship/Projects/LMS-backend/obj/",
+        "outputPath": "/home/sarthak/Documents/internship/Projects/LMS/LMS-backend/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/sarthak/.nuget/NuGet/NuGet.Config"

@@ -1,3 +1,4 @@
+// Data/AppDbContext.cs - UPDATED VERSION
 using Microsoft.EntityFrameworkCore;
 using RestAPI.Models;
 
@@ -34,6 +35,10 @@ namespace RestAPI.Data
                 entity.Property(b => b.ISBN).HasMaxLength(20);
                 entity.Property(b => b.SubjectGenre).HasMaxLength(100);
                 
+                //  Configure availability fields
+                entity.Property(b => b.TotalCopies).HasDefaultValue(1);
+                entity.Property(b => b.AvailableCopies).HasDefaultValue(1);
+                
                 //relation
                 entity.HasOne(b => b.Author)
                     .WithMany(a => a.Books)
@@ -50,10 +55,17 @@ namespace RestAPI.Data
                 entity.Property(s => s.Semester).HasMaxLength(20);
             });
 
-            // Configure Issue entity
+            // Configure Issue entity - ENHANCED
             modelBuilder.Entity<Issue>(entity =>
             {
                 entity.HasKey(i => i.IssueId);
+                
+                // Configure date fields
+                entity.Property(i => i.IssueDate).IsRequired();
+                entity.Property(i => i.DueDate).IsRequired();
+                entity.Property(i => i.ReturnDate).IsRequired(false);
+                entity.Property(i => i.IsReturned).HasDefaultValue(false);
+                
                 //relation
                 entity.HasOne(i => i.Book)
                     .WithMany(b => b.Issues)

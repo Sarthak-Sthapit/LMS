@@ -41,6 +41,7 @@ namespace RestAPI.Application.Queries
         public bool Success { get; set; }
         public List<BookSummary> Books { get; set; } = new();
         
+
         public class BookSummary
         {
             public int BookId { get; set; }
@@ -48,8 +49,10 @@ namespace RestAPI.Application.Queries
             public int AuthorId { get; set; }
             public string AuthorName { get; set; } = string.Empty;
             public string Publisher { get; set; } = string.Empty;
+            public string Barcode { get; set; } = string.Empty;
             public string ISBN { get; set; } = string.Empty;
             public string SubjectGenre { get; set; } = string.Empty;
+            public DateTime? PublicationDate { get; set; }
         }
     }
 }

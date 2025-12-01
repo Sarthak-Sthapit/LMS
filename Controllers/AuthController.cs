@@ -8,7 +8,7 @@ using RestAPI.DTOs;
 using RestAPI.Application.Commands;
 using RestAPI.Application.Queries;
 using RestAPI.Application.Handlers;
-using MediatR; // Added this
+using MediatR; 
 
 namespace RestAPI.Controllers
 {
@@ -34,8 +34,8 @@ namespace RestAPI.Controllers
                 Password = dto.Password
             };
 
-            // Use mediator instead of direct handler call
-            var result = _mediator.Send(command).Result; // Keep it sync like your original
+            // Using mediator instead of direct handler call
+            var result = _mediator.Send(command).Result; 
 
             if (!result.Success)
             {
@@ -59,7 +59,7 @@ namespace RestAPI.Controllers
                 Password = dto.Password
             };
 
-            var result = _mediator.Send(query).Result; // Keep sync
+            var result = _mediator.Send(query).Result; 
             if (!result.Success)
             {
                 return Unauthorized(result.Message);
@@ -78,7 +78,7 @@ namespace RestAPI.Controllers
         public IActionResult GetAllUsers()
         {
             var query = new GetAllUsersQuery();
-            var result = _mediator.Send(query).Result; // Keep sync
+            var result = _mediator.Send(query).Result; 
             return Ok(result.Users);
         }
 
@@ -87,7 +87,7 @@ namespace RestAPI.Controllers
         public IActionResult GetUserById(int id)
         {
             var query = new GetUserByIdQuery { UserId = id };
-            var result = _mediator.Send(query).Result; // Keep sync
+            var result = _mediator.Send(query).Result; 
 
             if (!result.Success)
             {
@@ -102,7 +102,7 @@ namespace RestAPI.Controllers
         public IActionResult DeleteUser(int id)
         {
             var command = new DeleteUserCommand { UserId = id };
-            var result = _mediator.Send(command).Result; // Keep sync
+            var result = _mediator.Send(command).Result; 
 
             if (!result.Success)
             {
@@ -123,7 +123,7 @@ namespace RestAPI.Controllers
                 NewPassword = dto.NewPassword
             };
 
-            var result = _mediator.Send(command).Result; // Keep sync
+            var result = _mediator.Send(command).Result; 
             if (!result.Success)
             {
                 return BadRequest(result.Message);
